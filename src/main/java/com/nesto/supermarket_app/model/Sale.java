@@ -1,37 +1,30 @@
 package com.nesto.supermarket_app.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "sales")
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Sale {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Many sales can belong to one customer
     @ManyToOne
-    @JoinColumn(name = "customer_id", nullable = false)
+    @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    // Many sales can involve the same product
-    @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
+    // One sale can have many items (products)
+    @OneToMany(mappedBy = "sale", cascade = CascadeType.ALL)
+    private List<SaleItem> items = new ArrayList<>();
 
-    private int quantity;
-    private Double totalBill;
+    private Double totalBill = 0.0;
     private LocalDateTime saleDate;
 
-    // This method runs automatically before saving to DB
     @PrePersist
     protected void onCreate() {
         this.saleDate = LocalDateTime.now();
