@@ -18,23 +18,32 @@ public class AdminController {
     // 1. Show the Signup Page
     @GetMapping("/signup")
     public String showSignupPage(Model model) {
-        // We send an empty Admin object to the frontend to hold the form data
         model.addAttribute("admin", new Admin());
-        return "signup"; // This refers to signup.html in templates folder
+        return "signup";
     }
 
-    // 2. Handle the Form Submission
+    // 2. Handle the Form Submission with Duplicate Check
     @PostMapping("/register")
-    public String registerAdmin(@ModelAttribute("admin") Admin admin) {
+    public String registerAdmin(@ModelAttribute("admin") Admin admin, Model model) {
+
+        // CHECK: Does this email already exist in the database?
+        // Note: Make sure you have findByEmail defined in your Service/Repository
+        Admin existingAdmin = adminService.findByEmail(admin.getEmail());
+
+        if (existingAdmin != null) {
+            // If email exists, add error message and return to signup page
+            model.addAttribute("error", "Email already registered. Please login.");
+            return "signup";
+        }
+
+        // If no duplicate, save and redirect
         adminService.saveAdmin(admin);
-        return "redirect:/login?success"; // After signup, send them to login
+        return "redirect:/login?success";
     }
 
-    // 3. Show the Login Page (We will create this next)
+    // 3. Show the Login Page
     @GetMapping("/login")
     public String showLoginPage() {
         return "login";
     }
-
-
 }

@@ -8,34 +8,42 @@
             background: url('/images/signup_image.png') no-repeat center center fixed;
             background-size: cover;
             margin: 0;
-            padding: 20px; /* Ensures the box never touches the very edge */
+            padding: 20px;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh; /* Changed from height to min-height */
+            min-height: 100vh;
             font-family: 'Poppins', sans-serif;
             box-sizing: border-box;
         }
 
         .signup-box {
-            background: rgba(255, 255, 255, 0.5); /* More transparent */
+            background: rgba(255, 255, 255, 0.5);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-
-            padding: 25px 35px; /* Reduced vertical padding */
+            padding: 25px 35px;
             border-radius: 20px;
             border: 1px solid rgba(255, 255, 255, 0.2);
             box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-
             width: 100%;
-            max-width: 380px; /* Limits width */
-            max-height: 90vh; /* Limits height to 90% of the screen */
-            overflow-y: auto;  /* Adds a scrollbar ONLY if the screen is tiny */
-
+            max-width: 380px;
+            max-height: 90vh;
+            overflow-y: auto;
             text-align: center;
         }
 
-        /* Custom scrollbar for the glass box (optional) */
+        /* Error message style */
+        .error-alert {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 13px;
+            border: 1px solid #f5c6cb;
+            font-weight: 600;
+        }
+
         .signup-box::-webkit-scrollbar {
             width: 5px;
         }
@@ -45,27 +53,20 @@
         }
 
         h2 {
-           color: #000000; /* Set to Solid Black */
+           color: #000000;
            margin: 0 0 5px 0;
            font-size: 24px;
            font-weight: 700;
-           text-shadow: none; /* Removed shadow so the black text is sharp */
-          }
-
-        p.subtitle {
-            color: rgba(255,255,255,0.8);
-            font-size: 13px;
-            margin-bottom: 20px;
         }
 
         .input-group {
             text-align: left;
-            margin-bottom: 12px; /* Reduced spacing between fields */
+            margin-bottom: 12px;
         }
 
         label {
             display: block;
-            font-size: 12px; /* Smaller labels */
+            font-size: 12px;
             margin-bottom: 4px;
             color: white;
             font-weight: 500;
@@ -73,7 +74,7 @@
 
         input {
             width: 100%;
-            padding: 8px 12px; /* Thinner inputs */
+            padding: 8px 12px;
             background: rgba(255, 255, 255, 0.9);
             border: none;
             border-radius: 8px;
@@ -100,12 +101,6 @@
             transform: translateY(-1px);
         }
 
-        .footer-text {
-            color: white;
-            font-size: 12px;
-            margin-top: 15px;
-        }
-
         a {
             color: #5dade2;
             text-decoration: none;
@@ -118,6 +113,10 @@
     <h2>Nesto Supermarket</h2>
     <p>Admin Registration</p>
     <hr style="border: 0.5px solid #eee; margin-bottom: 20px;">
+
+    <div th:if="${error}" class="error-alert">
+        <span th:text="${error}">Error Message</span>
+    </div>
 
     <form th:action="@{/register}" th:object="${admin}" method="post">
         <div class="input-group">
@@ -148,7 +147,9 @@
         <button type="submit">Sign Up</button>
     </form>
 
-    <p>Already have an account? <a href="/login">Login here</a></p>
+    <p style="color: white; font-size: 12px; margin-top: 15px;">
+        Already have an account? <a href="/login">Login here</a>
+    </p>
 </div>
 
 </body>
